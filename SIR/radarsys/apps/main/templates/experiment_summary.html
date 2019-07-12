@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load static %}
+{% load main_tags %}
+{% block extra-head %}
+<link href="{% static 'css/bootstrap-datetimepicker.min.css' %}" media="screen" rel="stylesheet">
+{% endblock %}
+
+{% block exp-active %}active{% endblock %}
+
+{% block content-title %}{{title}}{% endblock %}
+{% block content-suptitle %}{{suptitle}}{% endblock %}
+
+{% block content %}
+
+<table class="table table-bordered">
+{% for key in experiment_keys %}
+<tr><th>{{key|title}}</th><td>{{experiment|attr:key}}</td></tr>
+{% endfor %}
+<tr><th>Lambda (m)</th><td>{{radar_lambda}}</td></tr>
+</table>
+
+
+{% for conf in configurations %}
+
+    <div class="">
+        <h4 class="panel-title"><b> {{conf.conf}}</b></h4>
+        <br>
+    </div>
+
+	<table class="table table-bordered">
+		{% for key in conf.keys %}
+		<tr><th>{{key}}</th><td>{{conf|attr:key}}</td></tr>
+		{% endfor %}
+	</table>
+
+{% endfor %}
+
+<div class="pull-right">
+<button type="button" class="btn btn-primary" id="bt_back">Back</button>
+<button type="button" class="btn btn-primary" id="bt_verify">Verify Parameters</button>
+</div>
+
+{% endblock %}
+
+{% block sidebar%}
+   {% include "sidebar_devices.html" %}
+{% endblock %}
+
+{% block extra-js%}
+<script type="text/javascript">
+
+  $("#bt_back").click(function() {
+	    document.location = "{% url 'url_experiment' experiment.id%}";
+  });
+
+  $("#bt_verify").click(function() {
+	    document.location = "{% url 'url_verify_experiment' experiment.id%}";
+  });
+
+</script>
+{% endblock %}

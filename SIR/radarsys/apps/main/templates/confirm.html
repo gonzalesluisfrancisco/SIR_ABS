@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+{% block content-title %}{{title}}{% endblock %}
+{% block content-suptitle %}{{suptitle}}{% endblock %}
+
+{% block content %}
+        
+<form action="" method="post" class="form">{% csrf_token %}
+{% if form %}
+  {% bootstrap_form form layout='horizontal' size='medium' %}
+  <div style="clear: both;"></div>
+{% endif %}
+{% if delete %}
+  <h3>Are you sure you wish to delete: {{ object }}?</h3>
+{% else %}
+  {% if message %}
+    <p>{{ message }}</p>
+  {% else %}
+    <h4>Are you sure you wish to proceed?</h4>
+  {% endif %}
+{% endif %}  
+  <br>
+  <div class="pull-right">
+  <button class="btn btn-primary" type="submit">
+    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Yes
+  </button>
+  <button type="button" class="btn btn-primary" onclick="{% if previous %}window.location.replace('{{ previous }}');{% else %}history.go(-1);{% endif %}">
+    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> No
+  </button>
+  </div>
+</form>
+
+{% endblock %}

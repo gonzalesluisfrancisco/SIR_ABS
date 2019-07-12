@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load static %}
+{% load main_tags %}
+
+{% block dev-active %}active{% endblock %}
+
+{% block content-title %}{{title}}{% endblock %}
+{% block content-suptitle %}{{suptitle}}{% endblock %}
+
+{% block content %}
+<table class="table table-bordered">
+{% for key in device_keys %}
+<tr><th>{{key|title}}</th><td>{{device|attr:key}}</td></tr>
+{% endfor %}
+</table>
+<div class="btn-group pull-right" role="group">
+<button type="button" class="btn btn-primary" id="bt_edit_device">Edit</button>
+<button type="button" class="btn btn-primary" id="bt_change_ip_device">Change IP</button>
+</div>
+<br></br>
+<br></br>
+{% endblock %}
+
+{% block sidebar%}
+{% include "sidebar_devices.html" %}
+{% endblock %}
+
+{% block extra-js%}
+<script type="text/javascript">
+  
+  $("#bt_edit_device").click(function() {
+    document.location = "{% url 'url_edit_device' device.id%}";
+  });
+  
+  $("#bt_change_ip_device").click(function() {
+    document.location = "{% url 'url_change_ip_device' device.id%}";
+  });
+  
+</script>
+{% endblock %}
