@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load static %}
+{% load main_tags %}
+{% block extra-head %}
+<link href="{% static 'css/bootstrap-datetimepicker.min.css' %}" media="screen" rel="stylesheet">
+{% endblock %}
+
+{% block operation-active %}active{% endblock %}
+
+{% block content-title %}{{title}}{% endblock %}
+
+{% block content %}
+
+<div class="clearfix"></div>
+
+{% if campaigns %}
+
+<h3>Current Campaigns</h3>
+<br>
+<div class="bootcards-list">    
+  <div class="panel panel-default">
+    <div class="list-group">
+    {% for item in campaigns %}
+    <a class="list-group-item" href="{{item.pk}}">
+        <div class="row">
+          <div class="col-sm-6">
+          <i class="fa fa-3x fa-calendar pull-left"></i>
+	  <h4 class="list-group-item-heading">{{item.name}}</h4>
+	  <p class="list-group-item-text">Radar: {% for radar in item.get_experiments_by_radar %}{{radar.name}},{% endfor %}</p>
+	  </div>
+	  <div class="col-sm-6">
+	  <p class="list-group-item-text">From: {{item.start_date}}</p>
+	  <p class="list-group-item-text">To: {{item.end_date}}</p>
+	  </div>
+
+	</div>
+    </a>
+    {% endfor %}
+  </div>
+  </div>
+</div>
+
+{% endif %}
+
+
+{% if campaign %}
+
+<h3>Systems</h3>
+<br>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" >
+
+	  {% for location in locations %}
+
+	  <div class="panel panel-default bootcards-summary">
+	    <div class="panel-heading" role="tab">
+	      <h3 class="panel-title">	        
+	          {{location.name}} [{{campaign.start_date|date:"Y/m/d"}} - {{campaign.end_date|date:"Y/m/d"}}]	          
+	        <button type="button" name="bt_play" class="btn btn-primary pull-right btn-xs" data-url="{% url 'url_radar_start' campaign.id location.id %}" style="margin-left: 10px">
+                <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+            </button>
+            <button type="button" name="bt_stop" class="btn btn-primary pull-right btn-xs" data-url="{% url 'url_radar_stop' campaign.id location.id %}" aria-label="Left Align" style="margin-left: 10px">
+                <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+            </button>
+            <button type="button" name="bt_refresh" class="btn btn-primary pull-right btn-xs" data-url="{% url 'url_radar_refresh' campaign.id location.id %}" aria-label="Left Align" style="margin-left: 10px">
+                <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+            </button>
+	      </h3>
+	    </div>	    
+	      <div class="panel-body">
+            <div class="row">
+			{% for item in location.experiments %}
+			    {% if location.name in item.location.name  %}
+					<div class="col-xs-6 col-sm-3" >
+					  <a class="bootcards-summary-item" href="{{item.get_absolute_url}}">
+                          <i class="fa fa-2x fa-cogs"></i>
+                          <h4>{{item.name}}<br><small>{{item.start_time}}-{{item.end_time}}</small>
+                            <span class="label label-{{item.status_color}}">{{item.get_status_display}}</span>
+                          </h4>
+                      </a>			        	
+					</div>
+			     {% endif %}
+			{% endfor %}
+            </div>
+	      </div>
+	    </div>
+	  
+	  {% endfor %}
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+
+
+{% block extra-js%}
+<script type="text/javascript">
+
+  //--------For PLAY Button-------
+    $("#accordion").on("click", "button[name=bt_play]", function(){
+    	//alert($(this).data('url'));
+    	document.location = $(this).data('url');
+    });
+
+  //--------For STOP Button-------
+    $("#accordion").on("click", "button[name=bt_stop]", function(){
+    	//alert($(this).data('url'));
+    	document.location = $(this).data('url');
+    });
+
+  //--------For REFRESH Button-------
+    $("#accordion").on("click", "button[name=bt_refresh]", function(){
+    	document.location = $(this).data('url');
+    });
+
+	$("#id_campaign").change(function() {	      
+		document.location = "{% url 'url_operation'%}"+$(this).val();		  
+    });
+
+
+
+</script>
+{% endblock %}

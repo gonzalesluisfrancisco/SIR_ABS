@@ -1,0 +1,350 @@
+<meta http-equiv='refresh' content="600">
+
+{% extends "dev_conf.html" %} {% load static %} {% load bootstrap3 %} {% load main_tags %}
+{% block extra-head %}
+<style>
+  .abs {
+    width: auto;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .abs td {
+    padding: 4px;
+  }
+
+  .module td {
+    padding: 4px 15px 4px 15px;
+    font-weight: bold;
+    border: 1px solid
+  }
+
+  .legend {
+    margin-left: 15px;
+    display: inline-block;
+    border: 2px solid;
+    vertical-align: top;
+  }
+
+  .legend th {
+    border-bottom: 1px dashed;
+    font-weight: bold;
+    vertical-align: center;
+    text-align: center;
+  }
+
+  .legend td {
+    padding: 2px;
+    text-align: center;
+  }
+
+</style>
+{% endblock %}
+{% block extra-menu-actions %}
+<li>
+  <a href="{{ dev_conf.get_absolute_url_plot }}" target="_blank">
+    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span> View Patterns </a>
+</li>
+{% endblock %}
+{% block extra-content %}
+{% if beams %}
+<h4>Beams:</h4>
+<div class="container">
+  <ul class="nav nav-pills">
+    {% for beam in beams %}
+    <li {%if beam.pk == active_beam %} class="active" {% endif %}>
+      <a data-toggle="pill" href="#menu{{forloop.counter}}">{{forloop.counter}}</a>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <div class="tab-content">
+    {% for beam in beams %}
+    <div id="menu{{forloop.counter}}" class="tab-pane fade {%if beam.pk == active_beam %}active in{% endif %}">
+      <h3>{%if beam.pk == active_beam %}Active Beam: {%endif%}{{beam.name}}</h3>
+      <table id="abs_pattern{{forloop.counter}}" class="abs">
+        <tr>
+          <td>
+            <b>North Quarter</b>
+            <table class="module">
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.1}} t{%endif%} itle='{{module_messages.1}}'>{{beam.get_upvalues.0}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.2}} t{%endif%} itle='{{module_messages.2}}'>{{beam.get_upvalues.1}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.3}} t{%endif%} itle='{{module_messages.3}}'>{{beam.get_upvalues.2}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.4}} t{%endif%} itle='{{module_messages.4}}'>{{beam.get_upvalues.3}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.1}} t{%endif%} itle='{{module_messages.1}}'>{{beam.get_downvalues.0}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.2}} t{%endif%} itle='{{module_messages.2}}'>{{beam.get_downvalues.1}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.3}} t{%endif%} itle='{{module_messages.3}}'>{{beam.get_downvalues.2}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.4}} t{%endif%} itle='{{module_messages.4}}'>{{beam.get_downvalues.3}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.9}} t{%endif%} itle='{{module_messages.9}}'>{{beam.get_upvalues.8}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.10}} {%endif%} title='{{module_messages.10}}'>{{beam.get_upvalues.9}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.11}} {%endif%} title='{{module_messages.11}}'>{{beam.get_upvalues.10}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.12}} {%endif%} title='{{module_messages.12}}'>{{beam.get_upvalues.11}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.9}} t{%endif%} itle='{{module_messages.9}}'>{{beam.get_downvalues.8}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.10}} {%endif%} title='{{module_messages.10}}'>{{beam.get_downvalues.9}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.11}} {%endif%} title='{{module_messages.11}}'>{{beam.get_downvalues.10}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.12}} {%endif%} title='{{module_messages.12}}'>{{beam.get_downvalues.11}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.17}} {%endif%} title='{{module_messages.17}}'>{{beam.get_upvalues.16}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.18}} {%endif%} title='{{module_messages.18}}'>{{beam.get_upvalues.17}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.19}} {%endif%} title='{{module_messages.19}}'>{{beam.get_upvalues.18}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.20}} {%endif%} title='{{module_messages.20}}'>{{beam.get_upvalues.19}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.17}} {%endif%} title='{{module_messages.17}}'>{{beam.get_downvalues.16}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.18}} {%endif%} title='{{module_messages.18}}'>{{beam.get_downvalues.17}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.19}} {%endif%} title='{{module_messages.19}}'>{{beam.get_downvalues.18}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.20}} {%endif%} title='{{module_messages.20}}'>{{beam.get_downvalues.19}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.25}} {%endif%} title='{{module_messages.25}}'>{{beam.get_upvalues.24}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.26}} {%endif%} title='{{module_messages.26}}'>{{beam.get_upvalues.25}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.27}} {%endif%} title='{{module_messages.27}}'>{{beam.get_upvalues.26}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.28}} {%endif%} title='{{module_messages.28}}'>{{beam.get_upvalues.27}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.25}} {%endif%} title='{{module_messages.25}}'>{{beam.get_downvalues.24}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.26}} {%endif%} title='{{module_messages.26}}'>{{beam.get_downvalues.25}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.27}} {%endif%} title='{{module_messages.27}}'>{{beam.get_downvalues.26}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.28}} {%endif%} title='{{module_messages.28}}'>{{beam.get_downvalues.27}}</td>
+              </tr>
+            </table>
+          </td>
+          <td>
+            <b>East Quarter</b>
+            <table class="module">
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.5}} t{%endif%} itle='{{module_messages.5}}'>{{beam.get_upvalues.4}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.6}} t{%endif%} itle='{{module_messages.6}}'>{{beam.get_upvalues.5}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.7}} t{%endif%} itle='{{module_messages.7}}'>{{beam.get_upvalues.6}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.8}} t{%endif%} itle='{{module_messages.8}}'>{{beam.get_upvalues.7}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.5}} t{%endif%} itle='{{module_messages.5}}'>{{beam.get_downvalues.4}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.6}} t{%endif%} itle='{{module_messages.6}}'>{{beam.get_downvalues.5}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.7}} t{%endif%} itle='{{module_messages.7}}'>{{beam.get_downvalues.6}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.8}} t{%endif%} itle='{{module_messages.8}}'>{{beam.get_downvalues.7}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.13}} {%endif%} title='{{module_messages.13}}'>{{beam.get_upvalues.12}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.14}} {%endif%} title='{{module_messages.14}}'>{{beam.get_upvalues.13}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.15}} {%endif%} title='{{module_messages.15}}'>{{beam.get_upvalues.14}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.16}} {%endif%} title='{{module_messages.16}}'>{{beam.get_upvalues.15}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.13}} {%endif%} title='{{module_messages.13}}'>{{beam.get_downvalues.12}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.14}} {%endif%} title='{{module_messages.14}}'>{{beam.get_downvalues.13}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.15}} {%endif%} title='{{module_messages.15}}'>{{beam.get_downvalues.14}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.16}} {%endif%} title='{{module_messages.16}}'>{{beam.get_downvalues.15}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.21}} {%endif%} title='{{module_messages.21}}'>{{beam.get_upvalues.20}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.22}} {%endif%} title='{{module_messages.22}}'>{{beam.get_upvalues.21}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.23}} {%endif%} title='{{module_messages.23}}'>{{beam.get_upvalues.22}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.24}} {%endif%} title='{{module_messages.24}}'>{{beam.get_upvalues.23}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.21}} {%endif%} title='{{module_messages.21}}'>{{beam.get_downvalues.20}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.22}} {%endif%} title='{{module_messages.22}}'>{{beam.get_downvalues.21}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.23}} {%endif%} title='{{module_messages.23}}'>{{beam.get_downvalues.22}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.24}} {%endif%} title='{{module_messages.24}}'>{{beam.get_downvalues.23}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.29}} {%endif%} title='{{module_messages.29}}'>{{beam.get_upvalues.28}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.30}} {%endif%} title='{{module_messages.30}}'>{{beam.get_upvalues.29}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.31}} {%endif%} title='{{module_messages.31}}'>{{beam.get_upvalues.30}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.32}} {%endif%} title='{{module_messages.32}}'>{{beam.get_upvalues.31}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.29}} {%endif%} title='{{module_messages.29}}'>{{beam.get_downvalues.28}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.30}} {%endif%} title='{{module_messages.30}}'>{{beam.get_downvalues.29}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.31}} {%endif%} title='{{module_messages.31}}'>{{beam.get_downvalues.30}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.32}} {%endif%} title='{{module_messages.32}}'>{{beam.get_downvalues.31}}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>West Quarter</b>
+            <table class="module">
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.33}} {%endif%} title='{{module_messages.33}}'>{{beam.get_upvalues.32}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.34}} {%endif%} title='{{module_messages.34}}'>{{beam.get_upvalues.33}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.35}} {%endif%} title='{{module_messages.35}}'>{{beam.get_upvalues.34}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.36}} {%endif%} title='{{module_messages.36}}'>{{beam.get_upvalues.35}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.33}} {%endif%} title='{{module_messages.33}}'>{{beam.get_downvalues.32}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.34}} {%endif%} title='{{module_messages.34}}'>{{beam.get_downvalues.33}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.35}} {%endif%} title='{{module_messages.35}}'>{{beam.get_downvalues.34}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.36}} {%endif%} title='{{module_messages.36}}'>{{beam.get_downvalues.35}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.41}} {%endif%} title='{{module_messages.41}}'>{{beam.get_upvalues.40}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.42}} {%endif%} title='{{module_messages.42}}'>{{beam.get_upvalues.41}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.43}} {%endif%} title='{{module_messages.43}}'>{{beam.get_upvalues.42}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.44}} {%endif%} title='{{module_messages.44}}'>{{beam.get_upvalues.43}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.41}} {%endif%} title='{{module_messages.41}}'>{{beam.get_downvalues.40}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.42}} {%endif%} title='{{module_messages.42}}'>{{beam.get_downvalues.41}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.43}} {%endif%} title='{{module_messages.43}}'>{{beam.get_downvalues.42}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.44}} {%endif%} title='{{module_messages.44}}'>{{beam.get_downvalues.43}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.49}} {%endif%} title='{{module_messages.49}}'>{{beam.get_upvalues.48}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.50}} {%endif%} title='{{module_messages.50}}'>{{beam.get_upvalues.49}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.51}} {%endif%} title='{{module_messages.51}}'>{{beam.get_upvalues.50}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.52}} {%endif%} title='{{module_messages.52}}'>{{beam.get_upvalues.51}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.49}} {%endif%} title='{{module_messages.49}}'>{{beam.get_downvalues.48}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.50}} {%endif%} title='{{module_messages.50}}'>{{beam.get_downvalues.49}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.51}} {%endif%} title='{{module_messages.51}}'>{{beam.get_downvalues.50}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.52}} {%endif%} title='{{module_messages.52}}'>{{beam.get_downvalues.51}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.57}} {%endif%} title='{{module_messages.57}}'>{{beam.get_upvalues.56}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.58}} {%endif%} title='{{module_messages.58}}'>{{beam.get_upvalues.57}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.59}} {%endif%} title='{{module_messages.59}}'>{{beam.get_upvalues.58}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.60}} {%endif%} title='{{module_messages.60}}'>{{beam.get_upvalues.59}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.57}} {%endif%} title='{{module_messages.57}}'>{{beam.get_downvalues.56}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.58}} {%endif%} title='{{module_messages.58}}'>{{beam.get_downvalues.57}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.59}} {%endif%} title='{{module_messages.59}}'>{{beam.get_downvalues.58}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.60}} {%endif%} title='{{module_messages.60}}'>{{beam.get_downvalues.59}}</td>
+              </tr>
+            </table>
+          </td>
+          <td>
+            <b>South Quarter</b>
+            <table class="module">
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.37}} {%endif%} title='{{module_messages.37}}'>{{beam.get_upvalues.36}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.38}} {%endif%} title='{{module_messages.38}}'>{{beam.get_upvalues.37}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.39}} {%endif%} title='{{module_messages.39}}'>{{beam.get_upvalues.38}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.40}} {%endif%} title='{{module_messages.40}}'>{{beam.get_upvalues.39}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.37}} {%endif%} title='{{module_messages.37}}'>{{beam.get_downvalues.36}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.38}} {%endif%} title='{{module_messages.38}}'>{{beam.get_downvalues.37}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.39}} {%endif%} title='{{module_messages.39}}'>{{beam.get_downvalues.38}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.40}} {%endif%} title='{{module_messages.40}}'>{{beam.get_downvalues.39}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.45}} {%endif%} title='{{module_messages.45}}'>{{beam.get_upvalues.44}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.46}} {%endif%} title='{{module_messages.46}}'>{{beam.get_upvalues.45}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.47}} {%endif%} title='{{module_messages.47}}'>{{beam.get_upvalues.46}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.48}} {%endif%} title='{{module_messages.48}}'>{{beam.get_upvalues.47}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.45}} {%endif%} title='{{module_messages.45}}'>{{beam.get_downvalues.44}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.46}} {%endif%} title='{{module_messages.46}}'>{{beam.get_downvalues.45}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.47}} {%endif%} title='{{module_messages.47}}'>{{beam.get_downvalues.46}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.48}} {%endif%} title='{{module_messages.48}}'>{{beam.get_downvalues.47}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.53}} {%endif%} title='{{module_messages.53}}'>{{beam.get_upvalues.52}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.54}} {%endif%} title='{{module_messages.54}}'>{{beam.get_upvalues.53}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.55}} {%endif%} title='{{module_messages.55}}'>{{beam.get_upvalues.54}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.56}} {%endif%} title='{{module_messages.56}}'>{{beam.get_upvalues.55}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.53}} {%endif%} title='{{module_messages.53}}'>{{beam.get_downvalues.52}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.54}} {%endif%} title='{{module_messages.54}}'>{{beam.get_downvalues.53}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.55}} {%endif%} title='{{module_messages.55}}'>{{beam.get_downvalues.54}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.56}} {%endif%} title='{{module_messages.56}}'>{{beam.get_downvalues.55}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.61}} {%endif%} title='{{module_messages.61}}'>{{beam.get_upvalues.60}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.62}} {%endif%} title='{{module_messages.62}}'>{{beam.get_upvalues.61}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.63}} {%endif%} title='{{module_messages.63}}'>{{beam.get_upvalues.62}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.64}} {%endif%} title='{{module_messages.64}}'>{{beam.get_upvalues.63}}</td>
+              </tr>
+              <tr>
+                <td {%if beam.pk == active_beam %} {{color_status.61}} {%endif%} title='{{module_messages.61}}'>{{beam.get_downvalues.60}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.62}} {%endif%} title='{{module_messages.62}}'>{{beam.get_downvalues.61}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.63}} {%endif%} title='{{module_messages.63}}'>{{beam.get_downvalues.62}}</td>
+                <td {%if beam.pk == active_beam %} {{color_status.64}} {%endif%} title='{{module_messages.64}}'>{{beam.get_downvalues.63}}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+      {% if beam.id == active_beam %}
+      <table class="legend">
+        <tr>
+          <th colspan="2">Legend</th>
+        </tr>
+        <tr>
+          <td class="text-danger">
+            <i>RED</i>
+          </td>
+          <td>Disconnected</td>
+        </tr>
+        <tr>
+          <td class="text-warning">
+            <i>ORANGE</i>
+          </td>
+          <td>Connected</td>
+        </tr>
+        <tr>
+          <td class="text-test">
+            <i>PURPLE</i>
+          </td>
+          <td>Mismatch</td>
+        </tr>
+        <tr>
+          <td class="text-success">
+            <i>GREEN</i>
+          </td>
+          <td>Running
+          </td>
+        </tr>
+      </table>
+      {% else %}
+      <div style="vertical-align: top; display:inline-block;">
+        <button id="send_beam{{forloop.counter}}" type="button" class="btn btn-default">
+          <span class="glyphicon glyphicon-export" aria-hidden="true"></span>
+          Change Beam</button>
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+{% else %}
+<p style="color:#b4bcc2; margin-left: 5%;">
+  <i>No Beams...</i>
+</p>
+{% endif %} {% endblock extra-content %} {% block extra-js%}
+<script>
+  $(document).ready(function () {
+
+    {% for beam in beams %}
+
+    {% if dev_conf.operation_mode == 1 %}
+    $("#send_beam{{forloop.counter}}").prop('disabled', true)
+    {% else %}
+    $("#send_beam{{forloop.counter}}").click(function () {
+      document.location = "{% url 'url_send_beam' dev_conf.id beam.id %}";
+    });
+    {% endif %}
+
+    {% endfor %}
+
+
+  });
+</script> {% endblock %}
