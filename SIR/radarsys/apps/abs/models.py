@@ -76,7 +76,7 @@ rx_default = json.dumps({
                        [0,0,0,0,1,1,1,1]],
              })
 
-status_default = '0000000000000000000000000000000000000000000000000000000000000000'
+status_default = '1000000000000000000000000000000000000000000000000000000000000000'
 default_messages = {}
 
 for i in range(1,65):
@@ -393,9 +393,39 @@ class ABSConfiguration(Configuration):
             status = ['0'] * 64
             n = 0
 
+            # Se manda a cero RC para poder realizar cambio de beam
+            if self.experiment is None:
+                confs = []
+            else:
+                confs = Configuration.objects.filter(experiment = self.experiment).filter(type=0)
+            confdds  = ''
+            confjars = ''
+            confrc   = ''
+            #TO STOP DEVICES: DDS-JARS-RC
+            for i in range(0,len(confs)):
+                if i==0:
+                    for conf in confs:
+                        if conf.device.device_type.name == 'dds':
+                            confdds = conf
+                            confdds.stop_device()
+                            break
+                if i==1:
+                    for conf in confs:
+                        if conf.device.device_type.name == 'jars':
+                            confjars = conf
+                            confjars.stop_device()
+                            break
+                if i==2:
+                    for conf in confs:
+                        if conf.device.device_type.name == 'rc':
+                            confrc = conf
+                            confrc.stop_device()
+                            break
+
             sock = self.send_multicast(message)
 
-            for i in range(32):
+            while True:
+            #for i in range(32):
                 try:
                     data, address = sock.recvfrom(1024)
                     print address, data
@@ -403,10 +433,23 @@ class ABSConfiguration(Configuration):
                         status[int(address[0][10:])-1] = '3'
                     elif data == '0':
                         status[int(address[0][10:])-1] = '1'
+                except socket.timeout:
+                    print('Timeout')
+                    break
                 except Exception as e:
                     print 'Error {}'.format(e)
                     n += 1
             sock.close()
+
+            #Start DDS-RC-JARS
+            if confdds:
+                confdds.start_device()
+            if confrc:
+                #print confrc
+                confrc.start_device()
+            if confjars:
+                confjars.start_device()
+
         else:
             self.message = "ABS Configuration does not have beams"
             return False
@@ -658,7 +701,8 @@ class ABSConfiguration(Configuration):
         status = ['0'] * 64
         message = 'CHGB{}'.format(beam_pos) 
         sock = self.send_multicast(message)
-        for i in range(32):
+        while True:
+        #for i in range(32):
             try:
                 data, address = sock.recvfrom(1024)
                 print address, data
@@ -666,6 +710,9 @@ class ABSConfiguration(Configuration):
                     status[int(address[0][10:])-1] = '3'
                 elif data == '0':
                     status[int(address[0][10:])-1] = '1'
+            except socket.timeout:
+                print('Timeout')
+                break
             except  Exception as e:
                 print 'Error {}'.format(e)
                 pass
