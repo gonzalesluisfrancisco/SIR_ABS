@@ -227,8 +227,14 @@ def abs_conf_alert(request):
         print request.POST
 
         print("Hola mundo REST")
+        json_data   = request.read()
+        data        = json_data.loads(json_data)
+        issue_cont  = data['issue']
+
+        print("Contenido json 'issue': "+str(issue_cont))
+
         id_act_conf = get_object_or_404(ABSActive, pk=1)
-        conf = id_act_conf.conf
+        conf        = id_act_conf.conf
 
         remote_ip    = get_client_ip(request)
         remote_ip_id = (str(remote_ip).split('.'))[3]
